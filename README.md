@@ -16,9 +16,10 @@ Install
 Then run these
 
 ```sh
+npm i
 tsc
 cd cdk
-cdklocal bootstrap
+cdklocal bootstrap # only need to this on first deploy
 cdklocal deploy
 ```
 
@@ -27,4 +28,4 @@ In that url you'll find a GET endpoint for reading stuff from the local dynamodb
 
 # Things to note
 
-    - cdk destroy on this doesn't work very well, apparently the apigateway deletion doesn't work for some reason. To redeploy this after cdk destroy I had to run `docker-compose down` on localstack to completely destroy all resources before redeploying the app
+- cdk destroy on this doesn't work very well, apparently the apigateway deletion doesn't work for some reason. To redeploy this after cdk destroy I had to run `docker-compose down` on localstack to completely destroy all resources before redeploying the app
