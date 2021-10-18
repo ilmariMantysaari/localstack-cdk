@@ -1,9 +1,11 @@
 # CDK with localstack
 
-Simple demo of localstack + cdk. Create a dynamodb table, apigateway, and couple of lambdas with cdk to localstack that's running on lcoal machine.
+Simple demo of localstack + cdk.
+
+This creates an API gateway with one path, `/payload`, that has a POST handler for inputting data into a dynamodb table, and GET handler for getting all rows from the dynamodb table.
 See the lambdas in `src/index.ts`, and the resources in `cdk/lib/app-stack.ts`.
-This creates an API gateway with one path, `/payload`, that has a POST handler for inputting data into a dynamodb table, and GET handler for getting all rows from dynamodb table.
-When used with cdklocal, all the resources run on your won machine, with no AWS accoutn needed. The same cdk file can be used to deploy this stuff to real AWS as well.
+
+When used with cdklocal, all the resources run on your own machine, with no AWS account needed. The same cdk file can be used to deploy this stuff to real AWS as well.
 
 # How
 
