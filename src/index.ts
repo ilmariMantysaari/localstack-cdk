@@ -1,13 +1,21 @@
 import { APIGatewayEvent, APIGatewayProxyResult, Context } from "aws-lambda";
-import { DynamoDB } from "aws-sdk";
+import * as AWS from "aws-sdk";
 
-const docClient = new DynamoDB.DocumentClient({
+// AWS.config.update({
+//   region: "us-east-1",
+// });
+
+const docClient = new AWS.DynamoDB.DocumentClient({
   // Localstack runs this inside a docker container, this is to access host machine's localhost
-  // If you use 'localhost', it will try to connect to localhost inside the lambda container, and will not find dynamodb
-  endpoint: "host.docker.internal:4566",
+  // If you use 'localhost' instead of host.docker.internal, it will try to connect to localhost inside the lambda container, and will not find dynamodb
+  // If this is not defined at all, it will try to access real dynamodb in AWS
+  endpoint:
+    process.env.environment === "local"
+      ? "host.docker.internal:4566"
+      : undefined,
 });
 
-// Write stuff to dynamo db, pk with ISO timestamp
+// Write stuff to dynamodb, pk with ISO timestamp
 export const writeHandler = async (
   event: APIGatewayEvent,
   ctx: Context
@@ -25,7 +33,7 @@ export const writeHandler = async (
   };
 };
 
-// Scan the whole table and rteturn everything
+// Scan the whole table and return everything
 export const readHandler = async (event: APIGatewayEvent) => {
   const scanRes = await docClient
     .scan({
@@ -38,5 +46,8 @@ export const readHandler = async (event: APIGatewayEvent) => {
   return {
     statusCode: 200,
     body: JSON.stringify(scanRes.Items),
+    headers: {
+      "content-type": "application/json",
+    },
   };
 };

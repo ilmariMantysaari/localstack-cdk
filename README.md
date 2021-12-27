@@ -22,7 +22,7 @@ npm i
 tsc
 cd cdk
 cdklocal bootstrap # only need to this on first deploy
-cdklocal deploy
+cdklocal deploy -c environment=local
 ```
 
 CDK deploy outputs the api url as `AppStack.LocalstackAPIUrl`.

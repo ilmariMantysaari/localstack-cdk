@@ -4,8 +4,12 @@ import * as apigateway from "@aws-cdk/aws-apigateway";
 import * as dynamodb from "@aws-cdk/aws-dynamodb";
 import { CfnOutput } from "@aws-cdk/core";
 
+interface AppProps extends cdk.StackProps {
+  environment: string;
+}
+
 export class AppStack extends cdk.Stack {
-  constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
+  constructor(scope: cdk.App, id: string, props?: AppProps) {
     super(scope, id, props);
 
     const payloadTable = new dynamodb.Table(this, "PayloadTable", {
@@ -31,6 +35,7 @@ export class AppStack extends cdk.Stack {
       timeout: cdk.Duration.seconds(90),
       environment: {
         TABLE_NAME: payloadTable.tableName,
+        ENVIRONMENT: props?.environment || "local",
       },
     });
     payloadTable.grantReadData(readHandler);
